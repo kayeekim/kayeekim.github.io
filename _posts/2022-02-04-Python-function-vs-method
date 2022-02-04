@@ -1,4 +1,5 @@
 ---
+layout: post
 title:  "[Python] 함수 Function vs 메서드 Method, 매개변수 Parameter vs 인자 Argument"
 excerpt: "Python 문법 1) Function vs Method 차이점이 무엇인지. 2) Parameter vs Argument 차이점"
 
