@@ -16,11 +16,11 @@ last_modified_at: 2022-02-24
 ---
 
 
-Function vs Method
+## Function vs Method
 -. function란? 특정 기능을 수행하는 코드(들의 모음) . 매개변수 parameter를 이용해 자료 전달. 구현: 함수명(매개변수)
 -. method란? 함수 중에서 "특정 자료와 함께" 사용되는 함수. 특정 자료와 연관지어 기능.  구현: 자료.메서드함수명()
 
-Parameter vs Argument
+## Parameter vs Argument
 -. Parameter란 (매개변수)? 함수를 정의할 때의 input
 -. Argument란 (인자)? 함수를 호출할 때 (이미 정의된 함수를 사용할 때) 의 input.
 ex. 
