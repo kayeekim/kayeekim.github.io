@@ -44,7 +44,29 @@ last_modified_at: 2022-02-08
 
 -. 최초 중심점 설정 방법: a) random 설정, b) 사용자 설정, c) k-means++
 
--. k-means++? 최초로 설정된 중심점이 너무 가까운 경우, clustering 모델 비효율/좋지 않은 성능을 가져올 수 있음. 이를 보완하기 위해 k-means++ 는 최초 중심점을 가장 멀리 있는 점으로 설정. 최초 중심점들의 위치가 모여 있는 것을 방지.
+---
+#### * k-means++? 
+-. 최초로 설정된 중심점이 너무 가까운 경우, clustering 모델 비효율/좋지 않은 성능을 가져올 수 있음. 
+
+-. 이를 보완하기 위해 k-means++ 는 최초 중심점을 가장 멀리 있는 점으로 설정. 최초 중심점들의 위치가 모여 있는 것을 방지.
+
+-. K-means++의 중심점 설정 방법
+
+step 1) data point 중에서 random 으로 첫번째 중심점을 선택
+
+step 2) 첫번째 중심점과 나머지 data point 간 거리 계산
+
+step 3) step 2에서 지정한 중심점(들) 과의 거리비례 확률에 따라 다음 중심점 지정. (이미 지정된 중심점(들)으로부터 최대한 먼 곳에 배치된 data point를 그 다음 중심점으로 지정)
+
+step 4) step 2) ~3) 를 k번 반복하여 k개의 중심점 (centroid) 생성.
+
+```python
+from sklearn.cluster import KMeans
+
+model = KMeans(n_clusters=k, init='k-means++') # sklearn에서는 k-means++를 default로 사용하고 있음. 전통적인 random 선정방식 사용할 경우 init='random'으로 지정
+```
+
+---
 
 #### 2) 데이터의 클러스터 결정 
 -. 분류되지 않은 데이터의 cluster 설정. 각 cluster의 중심값과의 거리 distance 를 비교하여 가장 가까운 cluster로 귀속
@@ -55,7 +77,7 @@ last_modified_at: 2022-02-08
 -. 이전 cycle에서 설정된 각 cluster의 중심값을, 현 cycle 에서 각 cluster 로 분류된 데이터들의 중앙값으로 변경
 
 #### 4) 최종 클러스터 결정 
--. 중심점이 변경되지 않을 때까지 step 2) ~ 3) 반복. 중심점이 변경되지 않는 시점이 오면, 해당 시점에서의 클러스터를 최종 클러스터로 결정.
+-. 중심점이 변경되지 않을 때까지 2) ~ 3) 반복. 중심점이 변경되지 않는 시점이 오면, 해당 시점에서의 클러스터를 최종 클러스터로 결정.
 
 
 ## Hierarchical Clustering 계층적 군집화
