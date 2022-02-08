@@ -37,10 +37,39 @@ last_modified_at: 2022-02-07
 
 
 ## Time Series Decomposition 시계열 분해
+시계열에 영향을 주는 일반적 요인을 분리하여 분석/해석
+
 1) Trend 추세요인
-2) Seasonality 계절 요인
-3) Cycle/Residual 순환 요인 / 잔차 (불규칙 요인) 
-가 어떻게 나오는지 분해 (시켜서 확인)
+
+2) Seasonal 계절 요인
+
+3) Cyclical 순환 요인 
+
+-------> 1,2,3 을 뺀 나머지 잔차 (불규칙 요인) 가 어떻게 나오는지 분해시켜서 확인
+
+4) Irregular/Residual
+
+'''python
+"""
+data: y2 (datatype: Serie)
+Index: Date
+Value: y-values
+
+Datetime
+2020-01-23  1.3569
+2020-01-24  2.5667
+2020-03-03  5.1235
+"""
+
+import statsmodels.tsa.api.as tsa
+
+#시계열 분해
+model_series = tsa.seasonal_decompose(y2, model={옵션})
+
+#시각화
+fig = model_series.plot()
+plot.show()
+'''
 
 
 
@@ -79,6 +108,10 @@ p 시점 이전의 자료가 -> 현재 시점의 데이터에 영향을 주는 �
   --> 분산이 증가/감소 (시간에 따른 분산의 trend가 변화하는 경우), lag 변환
   
 ## Metric 검증 지표 
+#### AIC 
+-. 값이 낮을 수록 좋은 모델
+
+
 
 
  
