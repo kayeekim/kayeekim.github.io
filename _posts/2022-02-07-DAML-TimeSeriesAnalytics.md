@@ -47,7 +47,7 @@ last_modified_at: 2022-02-07
 
 -------> 1,2,3 을 뺀 나머지 잔차 (불규칙 요인) 가 어떻게 나오는지 분해시켜서 확인
 
-4) Irregular/Residual
+4) Irregular/Residual 불규칙 요인
 
 ```python
 #data: y2 (datatype: Serie)
@@ -164,7 +164,8 @@ plt.legend()
 plt.show()
 ```
 
-## 결과 해석
+## 결과 해석 
+-. https://kayeekim.github.io/DAML-Metric/
 ### Metric 검증 지표 
 #### AIC, BIC (+ HQIC) 로 모델 적합도 평가 가능
 -. 값이 낮을 수록 좋은 모델
