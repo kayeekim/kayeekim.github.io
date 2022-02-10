@@ -1,7 +1,7 @@
 ---
 layout: post
-title:  "[DA/ML] 군집화 Clustering - K-means, Hierarchical Clustering, DBSCAN"
-excerpt: " 비지도학습 - Clustering - K-means, Hierarchical Clustering, DBSCAN"
+title:  "[DA/ML] 비지도학습 USL - Clustering, Dimensionality Reduction"
+excerpt: " 비지도학습 - Clustering - K-means, Hierarchical Clustering, DBSCAN, Dimensionality Reduction - PCA"
 
 categories:
   - Blog
@@ -12,13 +12,15 @@ toc: true
 toc_sticky: true
  
 date: 2022-02-08
-last_modified_at: 2022-02-08
+last_modified_at: 2022-02-10
 ---
 
 # Unsupervised Learning (USL) 비지도 학습
 -. 데이터 label 이 없을 때
 
 -. feature 들의 특징을 가지고 일정한 규칙을 찾아내는 ML기법
+
+-. 대표적 예: 클러스터링, 차원 축소
 
 ## K-means Algorithm
 -. 주어진 데이터를 k개의 cluster 로 묶는 USL 알고리즘
@@ -95,6 +97,19 @@ model = KMeans(n_clusters=k, init='k-means++') # sklearn에서는 k-means++를 d
 -. 적절한 수준에서 tree 를 잘라 clustering
 
 
+## DBSCAN
+-. 특성 공간에서 가까이 있는 데이터가 많아 붐비는 지역 (특성 공간의 밀집 지역) 의 포인트를 찾음. 
+
+-. Idea: 데이터의 밀집 지역이 한 클러스터를 구성. 비교적 비어있는 지역을 경계로 다른 클러스터와 구분.
+
+===
+# Dimensionality Reduction
+## PCA 주성분분석
+-. 데이터의 분산을 최대한 유지하면서 저차원으로 데이터를 변환. *분산 유지 이유: 데이터의 고유한 특성을 최대한 유지하기 위함
+
+-. 수학적인 방법으로 데이터 정보의 유실이 가장 적은 라인을 찾아냄. *수학적으로 '데이터의 중첩이 가장 적다' = '데이터의 분산이 가장 크다'
+
+-. 특성들이 통계쩍으로 상관관계가 없도록 데이터셋을 회전 시키는 기술
 
 
 ###### 참고링크
