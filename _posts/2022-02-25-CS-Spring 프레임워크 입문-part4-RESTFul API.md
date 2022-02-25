@@ -29,8 +29,12 @@ Part 3 - 스프링과 보안
 
 2) REST 개념 이해
 
-3) RESTful API 서버 생성
+3) RESTFul API 서버 생성
 
+4) 참고: REST API 서버 생성 시 참고할 내용
+* RESTFul API란? http URL 을 통해 사용자가 필요한 자원을 요청하고, 서버가 해당 자원을 http method (CRUD) 를 활용해 처리하는 것을 말함.
+* spring 에서 API 서버 구현을 위한 작업: 1) pom.xml 에 필요한 외부 라이브러리 작성 / 2) RestController 구성 / 3) Domain 객체와 정보를 처리할 데이터베이스 연결작업 수행
+* REST API 사용 시, @RestController 어노테이션을 사용함으로써 기존 controller와는 다르게 함수의 return이 view (jsp 파일 연결) 이 아닌, json/xml 로 리턴 (MVC 패턴에 의한 구조를 그대로 따르지 않음)
 
 ## Ch 4-1. RESTFul API
 ### API 란?
