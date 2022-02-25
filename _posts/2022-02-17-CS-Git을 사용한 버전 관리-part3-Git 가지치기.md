@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "[Git] Part3 - Git 가지치기"
-excerpt: "Elice강의 - Git을 사용한 버전 관리- Partㄹ3 정리"
+excerpt: "Elice강의 - Git을 사용한 버전 관리- Part3 정리"
 
 categories:
   - Blog
