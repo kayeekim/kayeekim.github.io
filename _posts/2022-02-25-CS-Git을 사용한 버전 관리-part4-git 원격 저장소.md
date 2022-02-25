@@ -49,7 +49,7 @@ Part 3 - Git 가지 치기
 ### git 원격 저장소 받아오기
 -. 기존 git repository 복사: ```git clone ``` # 원격/로컬 저장소 복사
 
--. url 로 받아오기: ``` git clone {HTTP 형태로 존재하는 원격 저장소 주소; Clone with HTTPS}
+-. url 로 받아오기: ``` git clone {HTTP 형태로 존재하는 원격 저장소 주소; Clone with HTTPS} ```
 
 #### tip) 원격 저장소 받아올 때, 현재 폴더를 저장소로 쓰기
 -. git clone 명령어를 실행 할 경우, 현재 로컬 폴더 내에 새로운 폴더를 하나 더 생성하게 됨. 만약 현재 위치한 경로 (폴더) 자체를 저장소로 쓰고 싶다면 'git clone' 명령 마지막에 '. (마침표)' 작성
