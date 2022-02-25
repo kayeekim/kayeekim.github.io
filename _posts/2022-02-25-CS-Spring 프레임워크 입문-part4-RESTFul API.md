@@ -21,7 +21,7 @@ last_modified_at: 2022-02-25
 Part 1 - 스프링 프레임워크란?
 Part 2 - 스프링과 데이터베이스
 Part 3 - 스프링과 보안
-Part 4 - RESTFul API
+**Part 4 - RESTFul API**
 
 # Part 4 - RESTFul API
 ## Summary
