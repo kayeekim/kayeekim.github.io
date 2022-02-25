@@ -21,7 +21,7 @@ last_modified_at: 2022-02-25
 Part 1 - Git 이란?
 Part 2 - Git 시작하기
 Part 3 - Git 가지 치기
-**Part 4 - Git 원격 저장소  **
+**Part 4 - Git 원격 저장소**
 
 # Part 4 - Git 원격 저장소  
 ## Summary
