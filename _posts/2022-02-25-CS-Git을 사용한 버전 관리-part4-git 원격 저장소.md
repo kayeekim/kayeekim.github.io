@@ -43,6 +43,11 @@ Part 3 - Git 가지 치기
 * 원격 저장소 갱신: ``` git pull {동기화할 원격저장소명} {갱신할 브랜치명} ``` (자동으로 로컬저장소와 merge 까지 수행) , ``` git fetch ```
 * 원격 저장소 발행: ``` git push {동기화할 원격저장소명} {발행할 정보가 있는 브랜치명} ```
 
+#### [Remind] git diff
+-. ``` git diff ``` # commit 된 파일 상태와 현재 수정중인 상태 비교
+
+-. ``` git diff {비교할 branch1} {비교할 branch 2} ``` # branch 간의 상태 비교 ex. git diff feature/test origin/master
+
 ## Ch 1. 원격 저장소 받아오기 
 -. 원격 저장소란? 인터넷이나 네트워크 어딘가에 있는 저장소 (호스팅 서비스)
 
