@@ -4,7 +4,7 @@ title:  "[Python] 함수 Function/Method 이란? 매개변수 Parameter vs 인�
 excerpt: "Python 문법 1) Function vs Method 차이점이 무엇인지. 2) Parameter vs Argument 차이점"
 
 categories:
-  - Blog
+  - python
 tags:
   - [Python]
 
