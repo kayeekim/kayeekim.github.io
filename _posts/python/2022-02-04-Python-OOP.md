@@ -4,7 +4,7 @@ title:  "[Python] 객체지향 프로그래밍 OOP (Object-Oriented Programming)
 excerpt: "Python 문법 1) Object란?  2) OOP (Object-Oriented Programming)"
 
 categories:
-  - Blog
+  - python
 tags:
   - [Python]
 
