@@ -4,12 +4,13 @@ title: About
 permalink: /about/
 ---
 
-Some information about you!
+데이터 사이언티스트가 되고 싶어 끄적이는 블로그
 
 ### More Information
 
-A place to include any other types of information that you'd like to include about yourself.
+This blog is for a self-study.  
+However, I think this blog is to give you some advice about data science, computer science and so on. 
 
 ### Contact me
 
-[email@domain.com](mailto:email@domain.com)
+[khkim9549@naver.com](mailto:khkim9549@naver.com)
