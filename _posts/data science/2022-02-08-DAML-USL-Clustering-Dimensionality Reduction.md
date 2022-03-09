@@ -3,8 +3,7 @@ layout: post
 title:  "[DA/ML] 비지도학습 USL - Clustering, Dimensionality Reduction"
 excerpt: " 비지도학습 - Clustering - K-means, Hierarchical Clustering, DBSCAN, Dimensionality Reduction - PCA"
 
-categories:
-  - Blog
+categories:[data science]
 tags:
   - [DA/ML]
 
