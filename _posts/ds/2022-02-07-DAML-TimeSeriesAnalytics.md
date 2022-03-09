@@ -4,7 +4,7 @@ title:  "[DA/ML] 시계열 분석 Time Series"
 excerpt: "Time Series Analytics (a.k.a ARIMA)"
 
 categories:
-  - Blog
+  - ds
 tags:
   - [DA/ML]
 
