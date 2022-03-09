@@ -2,6 +2,6 @@
 
 layout: category
 
-title: computer science
+title: Computer Science
 
 ---
