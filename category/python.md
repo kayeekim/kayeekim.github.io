@@ -2,6 +2,6 @@
 
 layout: category
 
-title: python
+title: Python
 
 ---
