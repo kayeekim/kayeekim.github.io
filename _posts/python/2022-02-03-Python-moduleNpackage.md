@@ -4,7 +4,7 @@ title:  "[Python] 모듈 Module"
 excerpt: "Python 문법 1) Module 이란?  2) Module vs Package"
 
 categories:
-  - Blog
+  - python
 tags:
   - [Python]
 
