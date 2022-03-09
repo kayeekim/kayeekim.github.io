@@ -4,7 +4,7 @@ title:  "[WEB] Spring 프레임워크 입문 Part2 - 스프링과 데이터베�
 excerpt: "Elice강의 - Spring 프레임워크 입문- Part 2 정리"
 
 categories:
-  - Blog
+  - web
 tags:
   - [WEB]
 
