@@ -37,7 +37,7 @@ Federated Learning 은 탈중앙화 (Decentralizing) 상황에서 모델을 학�
 통신 분야에서 해당 키워드가 자주 등장하는 이유는, 이 FL 기술을 사용하여 _개인정보 유출을 방지하면서 ML 모델 학습을 수행_ 할 수 있다는 장점이 있기 때문으로 보인다.
 
 ## How to.?
-> It works like this: your device downloads the current model, improves it by learning from data on your phone, and then summarizes the changes as a small focused update. Only this update to the model is sent to the cloud, using encrypted communication, where it is immediately averaged with other user updates to improve the shared model. All the training data remains on your device, and no individual updates are stored in the cloud.
+> It works like this: your device downloads the current model, improves it by learning from data on your phone, and then summarizes the changes as a small focused update. Only this update to the model is sent to the cloud, using encrypted communication, where it is immediately averaged with other user updates to improve the shared model. All the training data remains on your device, and no individual updates are stored in the cloud.  
 ![image](https://user-images.githubusercontent.com/98376833/157426012-ed33e0c7-82f7-4847-9750-bd703ea4c78e.png)  
 _Your phone personalizes the model locally, based on your usage (A). Many users' updates are aggregated (B) to form a consensus change (C) to the shared model, after which the procedure is repeated._
 
