@@ -4,7 +4,7 @@ title:  "[WEB] Spring 프레임워크 입문 Part4 - RESTFul API"
 excerpt: "Elice강의 - Spring 프레임워크 입문- Part 4 정리"
 
 categories:
-  - Blog
+  - web
 tags:
   - [WEB]
 
