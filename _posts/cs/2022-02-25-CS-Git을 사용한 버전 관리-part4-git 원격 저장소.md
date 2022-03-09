@@ -4,7 +4,7 @@ title:  "[Git] Part4 - Git 원격 저장소"
 excerpt: "Elice강의 - Git을 사용한 버전 관리- Part4 정리"
 
 categories:
-  - Blog
+  - cs
 tags:
   - [Git]
 
