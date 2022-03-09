@@ -4,7 +4,7 @@ title:  "[DA/ML] 모델 평가 Evaluation 와 지표/통계량 Metric"
 excerpt: "Metric 개념 정리 - 모델 평가 지표/관련 통계량"
 
 categories:
-  - Blog
+  - ds
 tags:
   - [DA/ML]
 
