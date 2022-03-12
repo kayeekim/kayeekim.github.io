@@ -16,17 +16,33 @@ last_modified_at: 2022-03-12
 
 ---
 
+우연히 DS 서비스를 기획하고 있는 선배와 교류할 기회가 생겼다. 같은 DS 산업 종사자로서, 선배가 하는 일은 일종의 실험 계획 방법 이라고 느꼈다. 들었던 내용과 개인적으로 이해한 내용을 바탕으로 글을 남겨 보았다.
+_대화에서 정리된 내용이기에, Copy는 금지합니다_
+
 ## Summary
-1. Digital Experimentation 을 세우기 위한 순서를 세워보자. 
+1. 고찰
+2. Digital Experimentation 을 계획하는 방법을 알아보자
+* (1) 가설 정의
+* (2) Objective 정의
+* (3) Target Metric 
+* (4) Test
+* + (5) 가설검정
+
+
+## 고찰
+본인이 해왔던 업무는 데이터분석 문제를 풀기위한 방법, 즉 분석 문제 해결방법에 집중해있는 경우가 많았다. User로 부터 해결이 필요한 Problem 을 전달받으면 (배경목적), "이 배경목적을 구체화하고 관련된 데이터를 정의/수집/전처리하여 알맞은 분석알고리즘을 찾아 분석을 수행하고 결론을 내는 cycle"로 업무를 수행하였으다 (본인이 암묵적으로 가지고 있던 Cycle로, 개인 멘토링을 진행할 때 제안해주는 Cycle이기도 하다). 특히 본인의 역할은 전처리와 적절한 분석알고리즘을 찾고 이를 검증하는데 집중해 있었다. 
+
+오늘 선배로부터 들은 건 이보다 더 general 한, 좀 더 포괄적인 문제 해결 접근방법이다. DS/AI 서비스를 기획하기 위한 접근방법, User 가 무엇을 원할까부터 정의 하기 위해선 어떤 순서로 접근하는지의 방법을 설명해주셨다고 생각한다. 매우 흥미로운 주제였고 본인이 ds업무를 하면서 base로 깔고가야할 지식이라는 생각이 들었기에, 언제든지 다시 찾아보기 위해 필기한 내용을 위주로 한번 정리해 보았다.  
+
 
 ## Digital Experimentation 계획 순서
 ### (1) 가설 정의 - Hypothesis를 세우자. 
 
-### (2) Objective Function 정의 - Objective 는 무엇일까 
+### (2) Objective 정의 - Objective 는 무엇일까 __Objective Function__ 
 * Increase revenue/profit
 * Increase conversion rate
 * Increase customer sign-ups
-* Increare repeated visits
+* Increase repeated visits
 * Decrease ...
 
 ### (3) 정량적 지표 정의 - Target Metric 은 무엇일까
