@@ -133,6 +133,7 @@ _trg, attention = self.encoder_attention(trg, enc_src, enc_src, src_mask) # Mult
 * (2) Attention distribution 구함 (attention 라고도 표현): softmax 취하기
     * (kaye) α(Q,K)
     * ==> α(Q,K): softmax( (1)에서 구한 scaled-dot product )
+    * *참고: Visualization of attention layer 볼 때 주로 확인하는 값이 이 값. α(Q,K)
 * (3 - 최종) Attention Value: 
     * (kaye) Attention (Q,K,V)
     * (2)에서 구한 값과 Value vector 를 곱한 뒤 모두 더해줌
@@ -166,15 +167,29 @@ _trg, attention = self.encoder_attention(trg, enc_src, enc_src, src_mask) # Mult
 #### Multi-Head Attention 의 장점
 * 여러 개의 서로 다른 representation subspace 를 가짐으로써 single-head attention 보다 문맥을 더 잘 이해할 수 있게 된다.
 
-## Position-wise Feed-Forward Networks
+## Attention 외 사용한 모델 구조 
+### Position-wise Feed-Forward Networks
 * 각 Attention layers 를 통과한 값은 fully connected layer 로 들어간다. 
 * (paper) FFN(x) = ReLU(X@W1 + b1) @ W2 + b2
 
-## Positional Encoding (in Input Embeddings)
+### Positional Encoding (in Input Embeddings)
 * Transformer (2017, NIPS) 방법에서는 no recurrence, no convolution 이기 때문에 the order of the sequence 를 반영하기 위한 positional encoding 사용
 * Transformer (2017, NIPS) 논문에서는 sin 함수와 cos 함수의 합으로 static 하게 표현. 
 * 추후 발표된 BERT (Bidirectional Encoder Representations from Transformers) 논문에서는 이 positionoal encoding layer 도 학습 가능하도록 함 (dynamic) 
 
+## 그 외 사용된 Technique
+### Beam search
+* 항상 높은 예측확률을 갖는 token **만** 을 선택하면서 결과를 보는 것이 아닌. (<- Base Technique)
+* Target token 예측 시, 예측할 token position 별로 (y(t)) 
+* beam size n 개의 확률이 높은 token 후보 들에 대해 
+* top beams m 번째 time step 가지의 경우를 모두 계산하면서 정답을 찾아가는 방법
+* 단, beam size n, top beams m은 hyperparameter.
+
+# Transformer based Model 
+* BERT
+* DETR
+* GPT-3
+ 
 --- 
 
 #### Reference LINK.
