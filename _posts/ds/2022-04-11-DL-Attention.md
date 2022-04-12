@@ -55,8 +55,9 @@ last_modified_at: 2022-04-12
 ### α(Q, K) OR Attention: Attention Distribution (softmax 함수 사용) α(i)
 * α(i) = softmax(e(i)) where e(i) = { a(s(i), h(1)), ..., a(s(i), h(Tx)) }
 * α(i,j) = softmax{ e(i,j) | e(i,1), .., e(i,(Tx)) }
-* ---> (1) 주어진 query 에 대해 모든 key 와의 유사도를 각각 구함
-* target token i 와 연관이 있는 각 source token j 에게 얼마나 집중 (attention) 할지를 표현
+* ---> (1) 주어진 query 에 대해 모든 key 와의 **유사도**를 각각 구함
+* target token i 와 연관이 있는 각 source token j 에게 얼마나 집중 (attention) 할지를 표현 (유사도; Attention value를 계산하기 위한 일종의 weight 역할)
+* *참고: Visualization of attention layer 볼 때 주로 확인하는 값이 이 값. α(Q,K) 
 
 ### Attention (Q, K, V) OR Context Vector: Attention Value c(i)
 * 인코더의 문맥을 포함하고 있다하여 context vector 라고도 불림
