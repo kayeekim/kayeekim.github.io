@@ -19,6 +19,9 @@ last_modified_at: 2022-04-12
 
 ## Summary 
 * No Recurrence and No Convolution --> add "Positional Encodings" to the input embeddings at the bottoms of the encoder and decoder stacks (paper)
+* Self-Attention
+* Multi-Head Attention  & Masked Multi-Head Attention
+* Positional Encoding
 
 # What is a Transformer?
 * (2017, NIPS) Attention is all you need 논문에서는 Transformer 방법을 사용하여 번역기를 만듦
@@ -87,10 +90,11 @@ src = self.dropout((self.tok_embedding(src) * self.scale) + self.pos_embedding(p
 ## Attention (in Transformer)
 ### Self-Attention
 * Input (of Self-Attention) 내 각 단어 (token) 의 vector 들끼리 **서로 간의** 관계가 얼마나 중요한지 집중 (attention)
-* 예시 - (Encoder Block) query,key,value 모두 word embedded vector (X') 활용
-    * Query vector: X' @ W(Q) where W(Q): weight vector of query, @: Matrix Production
-    * Key vector : X' @ W(K)
-    * Value vector : X' @ W(V)
+* (0) Linear (내적)
+    * query, key, value 로 사용할 vector 와 Weight vector (W(Q), W(K), W(V)) 의 곱을 통해 (Query, Key, Value) vector 생성
+    * Query: (query 로 사용할 vector) @ W(Q)
+    * Key: (key 로 사용할 vector) @ W(K)
+    * Value: (value 로 사용할 vector) @ W(V)
 * (1) Attention score: (paper) Scaled Dot Product Attention Score 사용 
     * (kaye) Score(Q, K(j)) 
     * Query vector 는 문장 내 다른 단어들의 Key vector 와 곱해짐 (내적)
@@ -114,11 +118,12 @@ src = self.dropout((self.tok_embedding(src) * self.scale) + self.pos_embedding(p
 * Seq2Seq with Attention (2015, ICLR): Query, Key, Value 를 decoder cell의 hidden state s, encoder cell의 hidden state h 값을 사용
     * Query: s(t) of decoder cell
     * Key, Value: all h of encoder cell
-* Self-Attention (2017, NIPS): Query, Key, Value 를 attention layer의 input query, key, value vector 와 Weight vector (W(Q), W(K), W(V)) 의 곱을 통해 생성
-    * Query: (query 로 사용할 vector) @ W(Q)
-    * Key: (key 로 사용할 vector) @ W(K)
-    * Value: (value 로 사용할 vector) @ W(V)
-    * 
+* Self-Attention (2017, NIPS): Query, Key, Value 를 attention layer의 'input' 을 통해서만 가져옴. 서
+    * 예시 - (Encoder Block) query,key,value 모두 word embedded vector (X') 활용
+    * Query vector: X' @ W(Q) where W(Q): weight vector of query, @: Matrix Production
+    * Key vector : X' @ W(K)
+    * Value vector : X' @ W(V)
+    * Attention score 계산 시 Query, Key vector 간 내적이 이뤄지는데, 이 때 Query 는 자기 자신과의 Key 와도 내적
 --- 
 
 #### Reference LINK.
