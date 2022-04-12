@@ -47,15 +47,15 @@ last_modified_at: 2022-04-12
 * K (Keys): _모든 시점_ 의 encoder cell의 hidden states h(j) where j=1,...,Tx
 * V (Values): _모든 시점_ 의 encoder cell의 hidden states h(j) where j=1,...,Tx
 
-### Attention Score: a(s(i), h(j))
+### Attention Score: a(s(i), h(j)); Score(Q, K(j))
 * (paper) CONCAT 방식: a(s(i), h(j)) = $W_a @ tanh(W_b@[s(i); h(j)]) = W_a @ tanh(W_b@s(i) + W_c@h(j))
 * Dot-product 방식: a(s(i), h(j)) = Transpose(s(i))@h(j) 
 
-### Attention Distribution (softmax 함수 사용): α(i,j)
-* α(i,j) = softmax(e(i,j)) where e(i,j) = a(s(i), h(j))
+### Attention Distribution (softmax 함수 사용): α(i); α(Q, K)
+* α(i) = softmax(e(i)) where e(i) = { a(s(i), h(1)), ..., a(s(i), h(Tx)) }
 * ---> (1) 주어진 query 에 대해 모든 key 와의 유사도를 각각 구함
 
-### Attention Value: c(i) -> Context vector
+### Attention Value: c(i); Attention (Q, K, V) -> Context vector
 * 인코더의 문맥을 포함하고 있다하여 context vector 라고도 불림
 * c(i) = Sum of { α(i,j) * h(j) }, j=1,..., Tx
 * --->  α(i,j) * h(j):  (2) 구해낸 유사도 (1) 를 key 와 맵핑되어있는 각각의 Value 에 반영
