@@ -43,7 +43,7 @@ last_modified_at: 2022-04-12
     * As the model has no recurrent it has no idea about the order of the tokens within the sequence. We solve this by using a second embedding layer called a **positional embedding layer**.
     * (원본 논문) static positional encoding 사용 / (Modern Transformer like BERT) learned positional encoding 활용 가능: ```python nn.Embedding(max_length, hid_dim) ```
 ```python
-""" pytorch """
+### pytorch 
 ## __init__(self, ...)
 self.tok_embedding = nn.Embedding(input_dim, hid_dim)
 self.pos_embedding = nn.Embedding(max_length, hid_dim)
@@ -59,7 +59,7 @@ src = self.dropout((self.tok_embedding(src) * self.scale) + self.pos_embedding(p
 ```
 
 ### Encoder Layer
-* Embedded vector -> (self-attention) a Multi-Head Attention Layer -> (point-wise) a Position-wise fully connected feedforward layer -> (Encoder Output z = (z1, ..., zn))
+* Embedded vector x' = (x'1, ..., x'n-> (self-attention) a Multi-Head Attention Layer -> (point-wise) a Position-wise fully connected feedforward layer -> (Encoder Output z = (z1, ..., zn))
 * Employ '(add) a residual connection' around each of the two sub-layers (multi-head / position-wise feedforward), followed by '(norm) layer normalization'.
 * 1) Multi-Head Attention Layer
 * 2) (Feed Forward) Position-wise fully connected feedforward Layer
@@ -84,7 +84,41 @@ src = self.dropout((self.tok_embedding(src) * self.scale) + self.pos_embedding(p
 * Output of Decoder Layer -> (linear) FCN (Fully Connected Network) & Softmax -> y(m+1) (predicted next-token probabilities)
 * (paper) We also use the usual learned linear transformation and softmax function to convert the decoder output to predicted next-token probabilities.
 
+## Attention (in Transformer)
+### Self-Attention
+* Input (of Self-Attention) 내 각 단어 (token) 의 vector 들끼리 **서로 간의** 관계가 얼마나 중요한지 집중 (attention)
+* 예시 - (Encoder Block) query,key,value 모두 word embedded vector (X') 활용
+    * Query vector: X' @ W(Q) where W(Q): weight vector of query, @: Matrix Production
+    * Key vector : X' @ W(K)
+    * Value vector : X' @ W(V)
+* (1) Attention score: (paper) Scaled Dot Product Attention Score 사용 
+    * (kaye) Score(Q, K(j)) 
+    * Query vector 는 문장 내 다른 단어들의 Key vector 와 곱해짐 (내적)
+    * 이 때 자기자신과의 key vector 와도 내적 <-- Self-Attention
+    * (scaled-dot product) 값 scaling을 위해 key vector의 크기의 제곱근으로 나눠줌. 이렇게 하면 softmax를 적용했을 때 합이 1이 된다.
+    * ==> Score(Q, K(j)) : ( Q @ Transpose(K) ) / (sqrt (dimension of keys)) 
+* (2) Attention distribution 구함: softmax 취하기
+    * (kaye) α(Q,K)
+    * ==> α(Q,K): softmax( (1)에서 구한 scaled-dot product )
+* (3 - 최종) Attention Value: 
+    * (kaye) Attention (Q,K,V)
+    * (2)에서 구한 값과 Value vector 를 곱한 뒤 모두 더해줌
+    * ==> Attention (Q,K,V): Sum of { α(Q, K) * V }
 
+#### Self-Attention의 장점
+* 내가 알고싶은 단어 (Query) 와 같은 문장 내 자기 자신을 _포함한_ 다른 단어들 (Key) 과의 관계를
+* Self-Attention 의 query 와 key (& value) 연산을 통해
+* 입력된 문장 내 단어들이 멀든 가깝든 관계를 유추할 수 있게 된다. 
+
+### (kaye) Seq2Seq with Attention (2015, ICLR) vs Self-Attention (2017, NIPS) 의 Q, K, V vector
+* Seq2Seq with Attention (2015, ICLR): Query, Key, Value 를 decoder cell의 hidden state s, encoder cell의 hidden state h 값을 사용
+    * Query: s(t) of decoder cell
+    * Key, Value: all h of encoder cell
+* Self-Attention (2017, NIPS): Query, Key, Value 를 attention layer의 input query, key, value vector 와 Weight vector (W(Q), W(K), W(V)) 의 곱을 통해 생성
+    * Query: (query 로 사용할 vector) @ W(Q)
+    * Key: (key 로 사용할 vector) @ W(K)
+    * Value: (value 로 사용할 vector) @ W(V)
+    * 
 --- 
 
 #### Reference LINK.
