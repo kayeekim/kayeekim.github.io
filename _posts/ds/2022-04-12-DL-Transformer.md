@@ -132,6 +132,7 @@ _trg, attention = self.encoder_attention(trg, enc_src, enc_src, src_mask) # Mult
     * ==> Score(Q, K(j)) : ( Q @ Transpose(K) ) / (sqrt (dimension of keys)) 
 * (2) Attention distribution 구함 (attention 라고도 표현): softmax 취하기
     * (kaye) α(Q,K)
+    * 주어진 query 에 대해 모든 key 와의 유사도를 각각 구하는 것.
     * ==> α(Q,K): softmax( (1)에서 구한 scaled-dot product )
     * *참고: Visualization of attention layer 볼 때 주로 확인하는 값이 이 값. α(Q,K)
 * (3 - 최종) Attention Value: 
