@@ -201,9 +201,9 @@ _trg, attention = self.encoder_attention(trg, enc_src, enc_src, src_mask) # Mult
 * 단, beam size n, top beams m은 hyperparameter.
 
 # Transformer based Model 
-* BERT
+* BERT (Bidirectional Encoder Representations from Transformers, Google)
 * DETR
-* GPT-3: 미국의 인공지능 연구기관 OpenAI 가 개발한 자연어처리 모델
+* GPT-3 (Generative Pre-trained Transformer -3, OpenAI): 미국의 인공지능 연구기관 OpenAI 가 개발한 자연어처리 모델
 
 ## GPT-3
 * (Origina - NLP 적용) GPT-3
