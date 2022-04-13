@@ -18,16 +18,30 @@ last_modified_at: 2022-04-12
 
 ## Summary 
 * No Recurrence and No Convolution --> add "Positional Encodings" to the input embeddings at the bottoms of the encoder and decoder stacks (paper)
-    * Attention Mechanism 으로  Recurrent, Convolution 연산을 대신한 논문
-* Self-Attention
-* Multi-Head Attention  (and Masked Multi-Head Attention)
-* Positional Encoding
+    * Attention Mechanism **만** 으로  Recurrent, Convolution 연산을 대신한 논문
+* Encoder-Decoder 구성을 따르지만, Encoder/Decoder 내에 RNN, CNN 연산 없이 Attention (+ Feed-forward 연산) 으로만 구성되어 있다.
+* 제안된 모델 구조
+    * Self-Attention
+        *  **동일한 문장 내** 각 단어들간의 유사도를 계산
+    * Multi-Head Attention  (and Masked Multi-Head Attention)
+        *  **여러 관점 (Multi Head) 반영이 가능토록 같은 문장에 대해 병렬로 Attention 수행**       
+        * A head (head 하나) ~ A single attention 을 의미 
+        * Masked Multi-Head Attention: Decoder 에서만 사용. Self-Attention 시 아직 예측하지 않은 출력 단어 는 마스킹 처리 (depend only on the known outputs). 
+    * Positional Encoding: 
+        * 각 단어 벡터에 위치 정보를 더하는 방식
+        * RNN의 순차적인 처리 특성을 대체할 수 있다
 
 # What is a Transformer?
 * (2017, NIPS) Attention is all you need 논문에서는 Transformer 방법을 사용하여 번역기를 만듦
 * A 언어로 쓰인 문장 -> Transformer (여러 개의 'encoder blocks & decoder blocks' - 논문에서는 각각 6개 사용) -> B 언어로 쓰인 같은 의미의 문장으로 출력
 * Similar to the 'Convolutional Seq2Seq model', the Trnasformer does not use any recurrence. It also does not use any convolutional layers. 
 * Instead the model is entirely made up of linear layers, attention mechanisms and normalization  
+
+## 주요 개선 Point
+* No Recurrent, No Convolution. Only Attention!
+* 성능 향상: 기존 RNN 기반 / CNN 기반 알고리즘 대비 성능 향상
+* 속도 개선: RNN 의 순차적인 처리 특성을 병렬 처리로 대체한다.
+* 문제 개선: 긴 문장에서 성능이 저하되는 RNN 의 Long-Term Dependency 문제 개선
 
 ## The Transformer - Model Architecture
 * Transformer 모델 구조
@@ -205,10 +219,32 @@ _trg, attention = self.encoder_attention(trg, enc_src, enc_src, src_mask) # Mult
     * 이를 바탕으로, 학습하지 않은 텍스트나 상황을 접해도 이미지를 그려낼 수 있게된다.
 
 ---
-자연어처리 기술의 다양한 활용
-# 자연어처리 NLP (Natural Language Processing)
-* NLP 는 의미가 비슷한 단어끼리 수학적 공간에 서로 가까이 배치하는 작업을 수행한다.
+# 번외 - 자연어처리 기술의 다양한 활용
+## 자연어처리 NLP (Natural Language Processing) 
+* **NLP 는 의미가 비슷한 단어끼리 수학적 공간에 서로 가까이 배치하는 작업을 수행** 한다.
 * 문장/단어 의 유사도를 비교함으로서 문법 구조는 같지만 의미를 다르게 하는 작업도 가능
+
+### 자연어 처리 동향 (기계 번역 Machine Translation 의 발전과정)
+* '1950s: 기계 번역 역사 시작. 언어의 문법 규칙에 기반하는 rule-based 중심의 발전 (RBMT)
+* '19990s: 통게적 확률에 기반한 모델 (SMT, Statistical Machine Translation)
+* '2014~: 딥려닝 기반 방법론 (NMT)
+
+#### 딥러닝 기반 기계 번역 모델의 발전
+##### (2014, 2016~) RNN (with Attention) 기반
+* 문장내 단어를 순차적으로 입력받아 처리
+* 최초 NMT (2014): 입력문장을 처리하는 encoder, 출력 문장을 처리하는 decoder 를 모두 RNN 으로 구성
+* GNMT (2016, google): Residual Connection 결합한 RNN 기반 NMT
+* 단점: 순차적으로 처리해야하기 때문에 학습속도가 느리고, 긴 문장의 Gradient Vanishing 문제 여전히 대두
+ 
+##### (2017~) CNN (with Attention) 기반
+* SliceNet (google)
+* ConvS2S (facebook)
+
+## 자연어 처리 서비스
+* 기계 번역: 번역 시스템에 활용
+* 질문 답변: 대화 시스템
+* 텍스트 분류: 스팸 분류
+* 
 
 ## 자연어 처리를 타 분야에 활용 예시
 ### 이미지
