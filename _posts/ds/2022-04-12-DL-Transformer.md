@@ -31,8 +31,14 @@ last_modified_at: 2022-04-12
         * 각 단어 벡터에 위치 정보를 더하는 방식
         * RNN의 순차적인 처리 특성을 대체할 수 있다
 
-# What is a Transformer?
+## Transformer (NIPS, 2017) 3줄 정리
 * RNN, CNN 연산 없이, Attention 으로만 구성된 알고리즘
+* Self-attention 을 통해 동일 문장 (attention에 input 으로 들어오는 문장) 내 각 단어들의 유사도를 계산
+* RNN, CNN 연산이 없어 고려되지 못하는 위치정보는 positional encoding 을 도입하여 해결.
+
+---
+
+# What is a Transformer?
 * (2017, NIPS) Attention is all you need 논문에서는 Transformer 방법을 사용하여 번역기를 만듦
 * A 언어로 쓰인 문장 -> Transformer (여러 개의 'encoder blocks & decoder blocks' - 논문에서는 각각 6개 사용) -> B 언어로 쓰인 같은 의미의 문장으로 출력
 * Similar to the 'Convolutional Seq2Seq model', the Trnasformer does not use any recurrence. It also does not use any convolutional layers. 
