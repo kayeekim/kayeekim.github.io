@@ -26,6 +26,7 @@ last_modified_at: 2022-04-12
 
 # What is a Attention
 ## 기본 IDEA
+* 단어 간의 유사도를 계산하여 관계성이 깊은 단어에 가중치를 부과한다.
 * decoder에서 출력 단어를 예측 (y_t) 하는 매 시점 time step 마다, encoder에서의 전체 입력 문장 (all x = (x1, ..., x(Tx))을 참고. 
 * 이 때, 전체 입력 문장 참고시 x1, ..., x(Tx)를 동일 비율로 참고하는 것이 아닌 해당 시점 t에서 예측해야할 단어 y(t) 와 연관이 있는 입력 단어 부분을 좀 더 집중 (attention) 해서 참고해온다.
 
