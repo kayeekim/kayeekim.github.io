@@ -16,7 +16,12 @@ last_modified_at: 2022-04-12
 
 ---
 
-## Summary 
+# Transformer (NIPS, 2017) 3줄 정리
+* RNN, CNN 연산 없이, Attention 으로만 구성된 알고리즘
+* Self-attention 을 통해 동일 문장 (attention에 input 으로 들어오는 문장) 내 각 단어들의 유사도를 계산
+* RNN, CNN 연산이 없어 고려되지 못하는 위치정보는 positional encoding 을 도입하여 해결.
+
+## 세부 Summary 
 * No Recurrence and No Convolution --> add "Positional Encodings" to the input embeddings at the bottoms of the encoder and decoder stacks (paper)
     * Attention Mechanism **만** 으로  Recurrent, Convolution 연산을 대신한 논문
 * Encoder-Decoder 구성을 따르지만, Encoder/Decoder 내에 RNN, CNN 연산 없이 Attention ( + Feed-forward) 으로만 구성되어 있다. --> Fully Connected (FC) layer 집합체라고 볼 수 있겠다.
@@ -30,11 +35,6 @@ last_modified_at: 2022-04-12
     * Positional Encoding: 
         * 각 단어 벡터에 위치 정보를 더하는 방식
         * RNN의 순차적인 처리 특성을 대체할 수 있다
-
-## Transformer (NIPS, 2017) 3줄 정리
-* RNN, CNN 연산 없이, Attention 으로만 구성된 알고리즘
-* Self-attention 을 통해 동일 문장 (attention에 input 으로 들어오는 문장) 내 각 단어들의 유사도를 계산
-* RNN, CNN 연산이 없어 고려되지 못하는 위치정보는 positional encoding 을 도입하여 해결.
 
 ---
 
