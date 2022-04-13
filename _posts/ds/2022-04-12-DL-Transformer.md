@@ -32,6 +32,7 @@ last_modified_at: 2022-04-12
         * RNN의 순차적인 처리 특성을 대체할 수 있다
 
 # What is a Transformer?
+* RNN, CNN 연산 없이, Attention 으로만 구성된 알고리즘
 * (2017, NIPS) Attention is all you need 논문에서는 Transformer 방법을 사용하여 번역기를 만듦
 * A 언어로 쓰인 문장 -> Transformer (여러 개의 'encoder blocks & decoder blocks' - 논문에서는 각각 6개 사용) -> B 언어로 쓰인 같은 의미의 문장으로 출력
 * Similar to the 'Convolutional Seq2Seq model', the Trnasformer does not use any recurrence. It also does not use any convolutional layers. 
