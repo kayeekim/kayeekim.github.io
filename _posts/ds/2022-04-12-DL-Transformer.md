@@ -19,7 +19,7 @@ last_modified_at: 2022-04-12
 ## Summary 
 * No Recurrence and No Convolution --> add "Positional Encodings" to the input embeddings at the bottoms of the encoder and decoder stacks (paper)
     * Attention Mechanism **만** 으로  Recurrent, Convolution 연산을 대신한 논문
-* Encoder-Decoder 구성을 따르지만, Encoder/Decoder 내에 RNN, CNN 연산 없이 Attention (+ Feed-forward 연산) 으로만 구성되어 있다.
+* Encoder-Decoder 구성을 따르지만, Encoder/Decoder 내에 RNN, CNN 연산 없이 Attention ( + Feed-forward) 으로만 구성되어 있다. --> Fully Connected (FC) layer 집합체라고 볼 수 있겠다.
 * 제안된 모델 구조
     * Self-Attention
         *  **동일한 문장 내** 각 단어들간의 유사도를 계산
