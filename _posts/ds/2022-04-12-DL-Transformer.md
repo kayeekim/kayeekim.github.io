@@ -65,7 +65,8 @@ last_modified_at: 2022-04-12
     * ```python nn.Embedding(input_dim, hid_dim) ```
 * 2) Positional Embedding Layer
     * As the model has no recurrent it has no idea about the order of the tokens within the sequence. We solve this by using a second embedding layer called a **positional embedding layer**.
-    * (원본 논문) **static positional encoding** 사용 / (Modern Transformer like BERT) learned positional encoding (=positional embedding) 활용 가능: ```python nn.Embedding(max_length, hid_dim) ```
+    * (원본 논문) **static positional encoding** 사용 / (Modern Transformer like BERT) learned positional encoding (=positional embedding) 활용 가능: ```nn.Embedding(max_length, hid_dim) ```
+     
 ```python
 ### pytorch 
 ## __init__(self, ...)
