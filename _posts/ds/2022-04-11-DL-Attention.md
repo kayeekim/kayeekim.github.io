@@ -17,7 +17,11 @@ last_modified_at: 2022-04-12
 
 ---
 
-## Summary 
+# Attention 1줄 정리
+* 단어 간의 유사도를 계산하여 관계성이 깊은 단어에 가중치를 부과한다.
+* (=) 주어진 Query 에 대해 모든 Key 와의 유사도를 계산 후, 해당 유사도와 Value 를 가중평균한다. 이 방법을 통해, 최종적으로 Query 에 대한 영향력이 높은 (Key, Value) 를 고려하게 된다.
+ 
+## 세부 Summary 
 * seq2seq with attention: (2015, ICLR)  Neural Machine Translation by Jointly Learning to Align and Translate
 * 'y(t)의 feature vector s(t)' 와 각 x = (x1, ..., x(Tx)) 의 feature vector h = (h1, ..., h(Tx)) 들과의 유사도 (attention score) 를 계산해서 
 * 해당 유사도와 각 x의 feature vector (hj)와의 weighted sum을 context vector 로 활용한다.
