@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "[DL] What is a Object Detection"
+title:  "[DL] Object Detection 개요와 작동원리"
 excerpt: "Object Detection - 작동원리, OD 모델 종류"
 
 categories:
