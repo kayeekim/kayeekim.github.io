@@ -64,19 +64,6 @@ last_modified_at: 2022-05-25
 * MTO (Make-to-Order)
 * ETO (Engineering-to-Order)
 
-### 생산 시스템에서 발생하는 주요 문제 
-* Forecasting
-* Aggregate Production Planning (APP, 총괄 생산 계획)
-* Inventory Control: Deterministic Environments (결정론적 환경)
-* Inventory Control: Stochastic Environments (확률적 환경)
-* Supply Chain Management
-* Production Control Systems: MRP and JIT
-* Operations Scheduling
-* Project Scheduling
-* Facilities Planning
-* Quality and Assurance
-* Maintenance and Reliaibility
-
 ## 생산 Measure
 ### 생산 지표 (Plant Measures)
 * Throughput: product that is high quality and is sold (단위 시간 동안 생산되는 양품의 수)
@@ -91,3 +78,47 @@ last_modified_at: 2022-05-25
 * Increase throughput
 * Decrease Cost
 * Decrease Assets
+
+---
+# 생산 시스템에서 발생하는 주요 문제 
+* Forecasting
+* Aggregate Production Planning (APP, 총괄 생산 계획)
+* Inventory Control: Deterministic Environments (결정론적 환경)
+* Inventory Control: Stochastic Environments (확률적 환경)
+* Supply Chain Management
+* Production Control Systems: MRP and JIT
+* Operations Scheduling
+* Project Scheduling
+* Facilities Planning
+* Quality and Assurance
+* Maintenance and Reliaibility
+
+### 생산 계획에서 주요 의사 결정
+* Forecasting: 무엇을, 얼마나, 언제까지 만들어야하는가?
+* Capacity Planning: 얼마나 만들 수 있는가?
+* Inventory Management / Material Requirement Planing (MRP): 현재 얼마나 가지고 있고 얼마나 더 필요한가?
+* Scheduling / Shop Floor Control: 무엇을 언제 만들어야 하는가?
+
+## 전략적 의사결정의 분류 (Time Horizons 에 따른 분류)
+### 장기 계획
+* Locating and Sizing New Facilities
+* Finding New Markets for Products
+* Mission Statement: meeting quality objectives
+
+### 중기 계획
+* Forecasting Product Demand
+* Determining Manpower Needs
+* Setting Channels of Distribution
+* Equipment Purchases and Maintenance
+
+### 단기 계획
+* Purchasing
+* Shift Scheduling
+* Inventory Control
+
+## Manufacturing Resource Planning (MRP 2)
+* 생산계획 의사결정시 MRP2 를 염두해두고 진행하면 도움이 된다.
+* ![image](https://user-images.githubusercontent.com/98376833/170256106-8bc5b976-8ce4-41f3-b1ff-19a23e48ba0a.png)
+* MRP, MRP2 와 ERP의 차이점: https://m.blog.naver.com/PostView.naver?isHttpsRedirect=true&blogId=odshappy&logNo=70014463064
+
+## Material Requirement Planning (MRP, 자재 소요 계획)
