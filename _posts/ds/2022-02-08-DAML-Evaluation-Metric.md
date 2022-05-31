@@ -12,7 +12,8 @@ toc: true
 toc_sticky: true
  
 date: 2022-02-08
-last_modified_at: 2022-02-10
+last_modified_at: 2022-05-31
+
 ---
 
 ## ML 개념
@@ -56,7 +57,7 @@ e.g. 몸무게 50kg 학생이 확률분포 상에서 몇 %에 위치하는지.? 
 ### Confusion Matrix 혼동 행렬
 |           |       |**예측결과**      |      |
 |---|---|---|---|
-|           |       |True              |False |
+|           |       |True (Test outcome positive) |False (Test outcome negative) |
 |**실제정답**|True  |True Positive (TP)|False Negative (FN)|
 |            |False |False Positive (FP)|True Negative (TN)|
 
@@ -70,11 +71,17 @@ e.g. 몸무게 50kg 학생이 확률분포 상에서 몇 %에 위치하는지.? 
 -. $ Accuracy = (TP+TN)/(TP+FN+FP+TN) $ 
 
 ### Precision 정밀도
--. 모델이 True 로 예측한 값이 실제로도 True일 비율.
+-. 모델이 True 로 예측한 값이 실제로도 True일 비율. = 모델이 positive (true)로 예측한 값 중 실제 값을 Hit 하는 (맞출) 비율
 
 -. 실제: False / 예측: True 라고 판단 (예측) 하면 안되는 경우 중요하게 사용. 
 
 -. $ Precision = TP/(TP+FP) $
+
+#### Mean Average Precision
+* Class 별 Average Precision 값들의 Mean 값 계산
+* ![image](https://user-images.githubusercontent.com/98376833/171096371-a2133dfb-dd66-48fe-a7fb-034ceb0caf44.png)
+* ![image](https://user-images.githubusercontent.com/98376833/171095733-e6cf437a-5efa-498f-b4d9-e9384e46bb63.png)
+    * https://pyimagesearch.com/2022/05/02/mean-average-precision-map-using-the-coco-evaluator/
 
 ### Recall 재현도
 -. 실제 True 인 값 중에서 모델이 True로 올바르게 예측한 비율
