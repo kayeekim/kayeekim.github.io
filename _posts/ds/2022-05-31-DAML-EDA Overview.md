@@ -1,7 +1,7 @@
 ---
 layout: post
-title:  "[DA/ML] EDA (Exploratory Data Analysis) Overview"
-excerpt: "EDA (Exploratory Data Analysis) Overview"
+title:  "[DA/ML] 데이터 이해와 전처리 Overview"
+excerpt: "EDA (Exploratory Data Analysis) & Other Preprocessing Overview"
 
 categories:
   - ds
