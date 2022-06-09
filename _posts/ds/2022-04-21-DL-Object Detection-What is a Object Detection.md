@@ -89,7 +89,7 @@ last_modified_at: 2022-06-09
 
 ## IoU: Intersection of Union
 * 예측한 Bounding Box (BBox) 와 실제 Bbox 가 얼마나 일치하는지 측정하기 위한 **평가 지표 (Metric)**
-* IoU = Area of Overlap / Area of Union (<=>) 교집합 영역 넓이 / 합집합 영역 넓이
+* IoU = Area of Overlap / Area of Union (=) 교집합 영역 넓이 / 합집합 영역 넓이
     * Area1: Ground-Truth Bounding Box (BBox)
     * Area2: Predicted BBox 
     * ![image](https://user-images.githubusercontent.com/98376833/172760598-7cc75b6c-8352-4409-a31b-e5878e92eda1.png)
@@ -111,7 +111,13 @@ last_modified_at: 2022-06-09
 *  --> 이 때 사용 하는 알고리즘이 Non-Maximum Suppression
 
 ### NMS 작동원리
-* OD 결과로 나온 객체 BBox 정보와 해당 BBox 가 객체일 확률 (Probability) 을 활용
+* OD 결과로 나온 객체 BBox 정보와 해당 BBox 가 클래스 객체일 확률 (Probability, P_c) 을 활용
+* NMS 목적: 가장 높은 확률을 가지는 BBox 를 찾아내는 것
+* 작동원리
+    * 객체를 감싸는 여러 Bounding Box 중 
+    * 가장 P_c 가 큰 Bounding Box 를 선택하는 것 (=) 
+    *  
+
 
 
 ----
