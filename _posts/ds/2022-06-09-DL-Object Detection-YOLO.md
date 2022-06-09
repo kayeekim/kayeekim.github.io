@@ -95,27 +95,61 @@ _*모델 등장 순서: YOLO-v1 (2016) -> YOLO-v2 (2017) -> YOLO-v3 (2018) -> YO
             * 이 최종 네트워크로부터 경계 박스와 object detect 에 대한 학습을 시작한다
     * 앵커 박스 (Anchor Box) 를 도입한다 (Prior-Knowledge 부여)
         * 참고: YOLO-v1 에서는 Anchor Box 를 쓰지 않고 각 그리드 셀에 대해서 Classification 을 수행했다.
-
+    * YOLO-v1의 마지막 Fully-connected layer 2개를 Convolution Layer 로 대체하였다
+        * ![image](https://user-images.githubusercontent.com/98376833/172884463-3ca54b7e-deb1-46e1-87a3-ceb00186a1a4.png)
+* (0) Input Image -> (1) "Pre-trained" Model (Darknet-19 사용) + Fine-tuning (추가 conv layer) -> (2-A) Bounding Boxes + Confidence: (2-A-1) FC layer 로 부터 Output 도출 (Candidate bboxes) & (2-A-2) NMS and (2-B) Class Probability Map
+* (2) Classification & Regression: (2-A) Bounding Boxes + Confidence 도출 + (2-B) Class Probabiltiy Map 도출
+    * (2-A, 2-B) Output : output의 한 셀 (1*1*k) = 그리드 한 셀에 대한 정보 [첫번째 Anchor box 정보 (x, y, w, h, conf, 클래스 정보 (클래스 수만큼 의 차원을 가짐)) + 두번째 Anchor box 정보 + ... ]
+        * (YOLO-v2의 Output 차원수) (grid size) * (n_anchor boxes * (5 + n_classes)) 
+        * (YOLO-v1) (grid size) * (5 + 5 + n_classes). *remind) YOLO-v1 에서는 셀당 2개의 bbox로 예측
+    
 ### 동작 과정
 
-### Anchor Box 도입 방법: Dimension Cluster, Direct Location Cluster
+### YOLO-v2 (2017) 도입 Technique
+* Anchor Box 도입 방법: Dimension Cluster, Direct Location Cluster
+* Passthrough Layer
+    * (YOLO-v1) CNN Architecture 의 마지막 Feature Map 만 사용하여 객체 탐지.
+        * 작은 물체에 대해 정보가 사라진다는 비판이 있었다
+    * (YOLO-v2) 상위 Layer 의 Feature Map을 하위 Layer 의 Feature Map 에 합쳐주는 Passthrough Layer 를 도입했다.
+        *![image](https://user-images.githubusercontent.com/98376833/172883832-b2809c91-e66a-4b6b-9c99-e98bbd335744.png)
+* Prediction 전 FC layer 를 Convolution layer 로 대체
+    * (장점) FC Layer 를 사용하지 않음으로써, Input Image 의 해상도에서 비교적 자유로워 졌다.
+* 작은 물체들을 잘 잡아내기 위해 YOLOv2는 여러 Scale 의 이미지를 Training 에 입력으로 활용했다
+    * FC Layer 를 사용하지 않기 때문에, YOLOv1과 달리 Scale의 제약이 감소
+    * YOLO-v2 Case: 학습 시에 320, 352, .., 608 과 같이 32픽셀 간격으로 매 10 batch 마다 입력 이미지의 해상도를 바꿔주며 학습을 진행하였다
+* 모델 경량화
+    * DarkNet 제안하여 도입
+        * Max Pooling 대신 Convolution 연산을 늘림   
+        * 마지막 단계에서 FC Layer 를 제거하고, Convolution 연산으로 대체함으로써 파라미터 수를 줄임
+        * 결론적으로, YOLO-v1 에서 사용하던 GoogLeNet 기반보다 경량화된 CNN 아키텍처를 사용함으로써 속도 개선
+
+#### Anchor Box 도입
 * Anchor Box 사용 이유
     * 사전에 크기와 비율이 모두 결정된 박스를 전제하고, 학습을 통해서 이 박스의 위치나 크기를 세부 조정
-    * (장점) 아예 처음부터 [x, y, w, h] 를 찾는 것보다 안정적으로 학습이 가능하다
+    * (장점) 아예 처음부터 [x, y, w, h] 를 찾는 것보다 안정적으로 학습이 가능하다 
+        * In Paper, Anchor box 를 적용함으로서 Accuracy 5% 상승
  
-#### Dimension Cluster (차원 클러스터)
+##### Dimension Cluster (차원 클러스터)
 * Anchor Box 를 찾기 위해 **K-means Clustering** 도입
-* YOLO-v2 Case: 저자는 COCO Dataset 의 Bounding Box 에 K-means Clustering 을 적용한 결과, Anchor Box 를 5개로 설정했을 때 Precision 과 Recall 모든 측면에서 좋은 결과를 낸다고 결론 짓고 있다. 
+* YOLO-v2 Case: 저자는 COCO Dataset 의 Bounding Box 에 K-means Clustering 을 적용한 결과, Anchor Box 를 **5개**로 설정했을 때 Precision 과 Recall 모든 측면에서 좋은 결과를 낸다고 제안
 
+##### Direct Location Cluster (직접적인 위치 예측)
+* ![image](https://user-images.githubusercontent.com/98376833/172881578-2ea0ef1b-9d31-4de1-8c52-939c69a456e3.png)
+* Anchor Box 를 따라, 하나의 셀에서 5차원 벡터 (t_x, t_y, t_w, t_h, t_o) 로 이루어진 BBox 예측 하는 기능 도입
+* 위 5차원 벡터 (t_x, t_y, t_w, t_h, t_o)를 통해 현재 앵커박스에서 조절이 필요한 위치 정보(b_x, b_y, b_w, b_h) 계산
+    * (위치에 대한 offset) b_x, b_y: 사전에 정의된 anchor box 대비 Bounding Box의 중심점을 얼마나 옮겨야 하는지 (중심점에 대한 Offset)
+    * (크기 scale 조절) b_w, b_h: 사전에 정의된 anchor box 의 크기를 얼마만큼의 비율로 조절해야하는지   
+        * 지수 승을 통해 예측한다.
+    * 단, Bounding Box 의 중심은 항상 grid 셀 안에 있어야 한다.
+        * Why? 이미 각 셀마다 중심점 예측을 수행하기 때문 (~) 각 셀마다 예측한 중심점 보유. 이 rule 을 깨지 않도록 하기 위함
 
-#### Direct Location Cluster
 
 ### YOLO-v2 (2017) 한계점
 
 ---
 
 ## YOLO-v3 (2018)
-* YOLO-v1 (2016) 특징
+* YOLO-v3 (2018) 특징
 
 ### 동작 과정
 
