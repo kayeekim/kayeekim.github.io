@@ -12,7 +12,7 @@ toc: true
 toc_sticky: true
  
 date: 2022-02-26
-last_modified_at: 2022-03-10
+last_modified_at: 2022-06-09
 
 ---
 
@@ -68,9 +68,9 @@ _*모델 등장 순서: R-CNN -> Fast F-CNN -> Faster R-CNN_
         * Warp 하는 이유? 동일 사이즈로 만들어 주기 위해.  
         * R-CNN Case: Convolution Layer 의 입력에서부터 동일한 Input Size 로 넣어주어서 Output Size 를 동일하게 한다.
     * R-CNN (2014) Case: 개별 Region Proposal (a Candiidate bbox) 마다 CNN 수행 
-* (3) Classification & Regression : Support vEctor Machine / Bounding Box Regression
+* (3) Classification & Regression : Support Vector Machine / Bounding Box Regression
     * (2) 에서 얻은 각각의 Convolution 결과에 대해 Classification & Regression 을 진행하여 
-    * 해당 candidate box 내 객체 존재 여부, bbox information 을 얻는다 
+    * 해당 candidate box 내 객체 존재 여부, bbox information (BBox 크기, 위치 재조정 여부) 을 얻는다 
     * R-CNN Case: Classifier 로 Linear SVM 사용
         *  SVM은 CNN으로 부터 추출된 각각의 Feature Vector 들의 점수를 Class 별로 매기고, 객체 여부 & 객체라면 어떤 클래스 객체인지 판별하는 역할을 한다.
 
