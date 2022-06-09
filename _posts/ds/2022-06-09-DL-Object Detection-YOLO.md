@@ -22,12 +22,12 @@ last_modified_at: 2022-06-09
 * Object Detection 이 무엇인지 알기 위해, 
     * 먼저 Image 분석 유형을 정리해 보고
     * Object Detection 기술에서 채택한 방법 (2-stage vs 1-stage 방식)
-    * 대표적인 OD 모델인 R-CNN 계열 모델이 등장한 순서와 특징을 알아본다 (R-CNN, Fast R-CNN, Faster R-CNN).
+    * 대표적인 1-stage OD 모델인 YOLO 계열 모델이 등장한 순서와 특징을 알아본다 (YOLOv1, YOLOv2, YOLOv3) 
 
 ----
 # YOLO 계열 모델 
-
-_*모델 등장 순서: R-CNN -> Fast F-CNN -> Faster R-CNN_
+* YOLO: You Only Look Once
+_*모델 등장 순서: YOLO-v1 (2016) -> YOLO-v2 (2017) -> YOLO-v3 (2018) -> YOLO-v4 (2020) -> YOLO-v5 (2020)_
 
 ### R-CNN vs Fast R-CNN vs Faster R-CNN 구성요소
 * R-CNN
@@ -39,11 +39,128 @@ _*모델 등장 순서: R-CNN -> Fast F-CNN -> Faster R-CNN_
 
 ---
 
-## R-CNN (CVPR, 2014)
+## YOLO-v1 (2016)
+* ![image](https://user-images.githubusercontent.com/98376833/172863925-54394af4-89a6-4bda-a52f-f0d665fe797f.png)
+* YOLO-v1 (2016) 특징
+    * 이미지를 일정 크기의 그리드 셀로 나누어 예측 
+    * (A) Bounding Boxes + Confidence, (B) Class Probability Map, 이 두 개가 동시에 진행되며 (1-stage) 합쳐져서 output 이 tensor 형태로 나오게 된다.
+    * Bounding Boxes + Confidence
+        * 각 그리드 셀당 2개의 Bounding Box (BBox) 를 그리면서 구역을 예측
+        * 각 Bounding Box 는 5개의 정보를 예측: [x, y, w, h, conf]
+            * x: 객체 중점의 x 좌표
+            * y: 객체 중점의 y 좌표
+            * w: Bounding Box 너비
+            * h: Bounding Box 높이
+            * conf (confidence) : 해당 위치에 객체가 있을 확률 
+    * Class Probability Map
+        * 그리드 한 셀 (각 그리드 셀 당) 당 어떤 클래스에 속하는지 예측 (예측 시, 한 셀당 하나의 클래스에 속하는 것으로 할당)
+* (0) Input Image -> (1) BackBone 모델 구조 (GoogleNet 사용) + 추가 conv layer -> (2-A) Bounding Boxes + Confidence: (2-A-1) FC layer 로 부터 Output 도출 (Candidate bboxes) & (2-A-2) NMS and (2-B) Class Probability Map
+* (2) Classification & Regression: (2-A) Bounding Boxes + Confidence 도출 + (2-B) Class Probabiltiy Map 도출
+    * (2-A, 2-B) Output : output의 한 셀 (1*1*k) = 그리드 한 셀에 대한 정보 [첫번째 bounding box 정보 (x, y, w, h, conf) + 두번째 bounding box 정보 (x, y, w, h, conf) + 클래스에 대한 정보 (클래스 수만큼 존재)]
+    *  if # of classes = 20 and grid size = 7*7,
+        * 총 98 (7*7*2) 개의 Bounding Box 가 물체의 위치와 20개의 클래스를 분류. (7*7*2) = (7*7) (grid size) * 2 (grid cell 당 2개 bbox 정보 예측) 
+        * output의 한 셀은 30차원으로 이루어져 있음 (5 (첫번째 bbox 정보) + 5 (두번째 bbox 정보) + 20 (클래스수))
+    * (2-A-2) NMS (Non-Maximum Suppression)
+        * 여러 candidate bboxes 중 NMS 를 거쳐 가장 객체를 잘 나타내는 Bbox 하나를 선택  
+ * (2-A-2)의 NMS를 통해 객체를 가장 잘 나타내는 bbox 하나가 선택되면, Class Probability Map 을 통해서 그 객체가 어떤 객체인지 판별 
+    
+### 동작 과정
+![image](https://user-images.githubusercontent.com/98376833/172869874-b3434270-0c18-45c1-9df6-7617e08fb35e.png)
 
+### YOLO-v1 (2016) 한계점
+* (1) 객체 검출의 시간은 빠르나 성능이 떨어짐. 
+    * 특히 작은 물체에 대한 성능이 좋지 않은 경우가 많았다.
+* (2) 각 셀에 대해서 Bounding Box 로 단순 예측을 진행한다.
+    * Anchor Box 등 별도의 박스를 사용하지 않는다.
+* (3) 하나의 셀에서 하나의 객체 (Object) 만 예측한다.
+    * 겸친 객체는 검출하지 못한다.
+* (4) Bounding Box 가 위치를 제대로 잡지 못하는 경우도 있다.
+* (2, 3, 4) 를 개선한 모델이 YOLO-v2 (2017)
+
+---
+
+## YOLO-v2 (2017)
+* YOLO-v2 (2017) 특징
+    * 성능과 속도를 모두 개선
+    * 9000 개의 Object Category 를 검출하는데 성공한 YOLO9000 (2017)도 함께 소개 
+    * YOLO-v1 에 비해 각종 모듈이 추가
+        * ![image](https://user-images.githubusercontent.com/98376833/172871781-22e01cd6-9743-487c-9345-b17e8e2505f6.png)
+    * 1단계 학습 (Pre-training) 과 2단계 학습 (Fine-tuning) 으로 이루어져 있다: YOLO-v2 에서는 Pre-training 을 활용한다.
+        * 1단계 학습 (Pre-training) 
+            * CNN 기반 Darknet-19 모델을 대량의 이미지를 수집한 ImageNet 데이터를 활용하여 사전에 학습시켰다.
+            * 이 사전 학습을 통해 CNN 이 이미지 특징을 추출할 수 있도록 도와준다.
+            * 참고: YOLO-v1 에서는 사전학습된 모델을 쓰지 않고, 해결할 데이터셋으로 바로 Scratch
+        * 2단계 학습 (Fine-tuning) 
+            * Pre-trained Darknet-19 모델의 마지막 layer 제거 후, Object Detection 을 위한 Module 을 추가한다.
+            * 이 최종 네트워크로부터 경계 박스와 object detect 에 대한 학습을 시작한다
+    * 앵커 박스 (Anchor Box) 를 도입한다 (Prior-Knowledge 부여)
+        * 참고: YOLO-v1 에서는 Anchor Box 를 쓰지 않고 각 그리드 셀에 대해서 Classification 을 수행했다.
+
+### 동작 과정
+
+### Anchor Box 도입 방법: Dimension Cluster, Direct Location Cluster
+* Anchor Box 사용 이유
+    * 사전에 크기와 비율이 모두 결정된 박스를 전제하고, 학습을 통해서 이 박스의 위치나 크기를 세부 조정
+    * (장점) 아예 처음부터 [x, y, w, h] 를 찾는 것보다 안정적으로 학습이 가능하다
+ 
+#### Dimension Cluster (차원 클러스터)
+* Anchor Box 를 찾기 위해 **K-means Clustering** 도입
+* YOLO-v2 Case: 저자는 COCO Dataset 의 Bounding Box 에 K-means Clustering 을 적용한 결과, Anchor Box 를 5개로 설정했을 때 Precision 과 Recall 모든 측면에서 좋은 결과를 낸다고 결론 짓고 있다. 
+
+
+#### Direct Location Cluster
+
+### YOLO-v2 (2017) 한계점
+
+---
+
+## YOLO-v3 (2018)
+* YOLO-v1 (2016) 특징
+
+### 동작 과정
+
+### YOLO-v3 (2018) 한계점
+
+
+* R-CNN (2014) 특징
+    * CNN으로 각 Region 의 클래스 분류 제안. 처음으로 DL 분야를 OD 에 적용
+* (0) Input Image -> (1) Extract region proposals (~2k (2,000장)) -> (2) Compute CNN features -> (3) Classify regions (+ bbox regression)
+* (1) Region proposal 방법: Input image 로부터 Selective Search 수행 - 2000개의 region proposal 을 찾음. 
+    * 여기서 수행되는 Selective Search 알고리즘은 (딥러닝 연산이 아닌 기존 영상처리 기반의) CPU 연산으로 진행됨
+* (2) Feature Extractor (Detection Network): 
+    * Object Recognition을 위해 딥러닝 (CNN) 연산 활용
+    * (1)에서 찾은 Region proposal 부분 (각 객체에 대한 후보 bbox들; candidate bboxes) 에 대해 Warp: Crop & Resize 한 후 이를 CNN의 input으로 사용 
+        * Warp 하는 이유? 동일 사이즈로 만들어 주기 위해.  
+        * R-CNN Case: Convolution Layer 의 입력에서부터 동일한 Input Size 로 넣어주어서 Output Size 를 동일하게 한다.
+    * R-CNN (2014) Case: 개별 Region Proposal (a Candiidate bbox) 마다 CNN 수행 
+* (3) Classification & Regression : Support Vector Machine / Bounding Box Regression
+    * (2) 에서 얻은 각각의 Convolution 결과에 대해 Classification & Regression 을 진행하여 
+    * 해당 candidate box 내 객체 존재 여부, bbox information (BBox 크기, 위치 재조정 여부) 을 얻는다 
+    * R-CNN Case: Classifier 로 Linear SVM 사용
+        *  SVM은 CNN으로 부터 추출된 각각의 Feature Vector 들의 점수를 Class 별로 매기고, 객체 여부 & 객체라면 어떤 클래스 객체인지 판별하는 역할을 한다.
+
+
+* 전체 프레임 워크를 End-to-End로 학습 불가 - 단순히 컴포넌트 여러개가 함께 진행되는 형태. 
+    * 1) Selective Search (ROI 추출), 2) CNN, 3-1) SVM, 3-2) Bounding Box Regression 각각의 컴포넌트가 다단계로 이루어져 한 번에 학습되지 않는다.
+        * 1) 입력 이미지에 대해 CPU 기반의 Selective Search 진행
+        * 2, 3) CNN, SVM, Regressor 모듈이 모두 분리되어 있음. 즉, SVM과 Bounding box regression 결과로 CNN 업데이트 불가
+    * 따라서 Global Optimal Solution 을 찾기 어려우며, 속도 또한 느림
+* 모든 RoI (Region of Interest) 를 CNN에 input으로 넣음. 즉 이미지 한장 당 2000번의 CNN 연산 필요
+* 이러한 R-CNN의 단점을 해결하기 위해 Fast R-CNN, Faster R-CNN 등 후속 연구가 진행되었다.
+
+---
+###
+* 모델 특징
+* 
+
+### 동작 과정
+
+### 한계점
 
 
 
 ----
 
 #### Reference
+* (이전 포스트) [DL] Object Detection - R-CNN 계열 모델 (R-CNN, Fast R-CNN, Faster R-CNN): https://kayeekim00.github.io/DL-Object-Detection-RCNN/
+* (이전 포스트) [DL] Object Detection 개요와 작동원리: https://kayeekim00.github.io/DL-Object-Detection-What-is-a-Object-Detection/
