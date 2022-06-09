@@ -51,16 +51,16 @@ last_modified_at: 2022-06-09
 
 ### Input and Output
 * Input: Image, Output: (For each proposed region) Multi-Class Classification, Bounding Box Regression 
-* Input Dataset 연습용 Sample (+찾는 법)
+* (Input) Image dataset. 예시 -  Dataset 연습용 Sample (+찾는 법)
     * Pascal VOC 데이터셋: 차량, 비행기, 자전거, 보트 등 20 개의 카테고리 포함하여 사람이 annotation 해놓은 데이터셋
     * AI 허브 Vision 데이터셋: 과학기술정보통신부, NIA 한국지능정보사회진흥원이 공동 개발한 한국형 Vision 데이터셋
         * https://aihub.or.kr/aihub-data/vision/about 
-
-### OD에서 Classification 과 Regression 의 역할
 * (Output) Classifier: Bounding Box Define / Regressor : Bounding Box Size 최적화
     * Classification: 물체의 클래스 분류 
     * Regression: 이미지 내 사물이 존재하는 bounding box 위치를 예측
-
+    * Output 형태: 각각 예측된 (Prediction) BBox 
+        * [p_c, b_x, b_y, b_h, b_w] 
+        * [객체가 있을 확률, 중앙좌표 (중심점) 의 x값, 중앙좌표 (중심점) 의 y값, 높이, 너비] 
 
 ## Object Detection 기술에서 채택한 방법 (2-stage vs 1-stage)
 ### 2-Stage Detector
@@ -77,9 +77,6 @@ last_modified_at: 2022-06-09
 * Image -> Feature Extractor -> Classification & Regression
 * 장점: 속도가 빠르지만 / 단점: 정확도는 낮은 경우가 많다 (2-Stage Detector 대비).
 * 대표적인 모델: YOLO 계열 모델
-
-## Object Detection 평가방법
-)
 
 # Object Detection 문제에서 쓰이는 개념 
 ## Bounding Box 란?
@@ -102,7 +99,7 @@ last_modified_at: 2022-06-09
 * 여러 개의 BBox 중 가장 정확한 하나의 BBox 만을 선택
 
 ### NMS 를 사용하는 상황
-* Input Image 의 그리드 (grid)가 19*19 로 이루어져 있다고 할 때,
+* Input Image 를 19*19 그리드 (grid)로 나누었다고 할 때,
 * 가장 이상적인 상황
     * 가장 적절한 그리드 내에 객체별 하나의 중앙점 (Mid-Point) 가 있는 것
 * 보통의 상황
@@ -112,12 +109,15 @@ last_modified_at: 2022-06-09
 
 ### NMS 작동원리
 * OD 결과로 나온 객체 BBox 정보와 해당 BBox 가 클래스 객체일 확률 (Probability, P_c) 을 활용
-* NMS 목적: 가장 높은 확률을 가지는 BBox 를 찾아내는 것
+    * 참고: (OD 모델 예측 결과) [p_c, b_x, b_y, b_h, b_w] = [객체가 있을 확률, 중앙좌표 (중심점) 의 x값, 중앙좌표 (중심점) 의 y값, 높이, 너비] 
+* NMS 목적: 각 객체당 1개의 bbox를 도출하는 것. 
+    * 한 객체에 대해 다수의 bbox 가 검출되는 경우 (candidate bbox), 객체를 가장 잘 감싸는 (가장 높은 확률을 가지는) 하나의 BBox 를 찾아내는 것.    
 * 작동원리
-    * 객체를 감싸는 여러 Bounding Box 중 
-    * 가장 P_c 가 큰 Bounding Box 를 선택하는 것 (=) 
-    *  
-
+    * 객체를 감싸는 여러 Bounding Box 중, 가장 P_c 가 큰 Bounding Box 를 선택하는 것
+    * 1) 객체가 있을 확률 P_c 값이 특정 값 (Threshold) 이하인 그리드의 BBox 제거 (e.g. Threshold 예시: 0.6)
+    * 2) 남아 있는 Box 중 아래 2-1, 2-2 작업 반복
+    * 2-1) 객체가 있을 확률 P_c 중 가장 큰 값을 가지는 그리드를 선택
+    * 2-2) 2-1에서 선택된 그리드의 Box 에 대해서 IoU 가 0.5 이상인 Box 는 모두 제거 (선택된 그리드의 box와 특정 IoU 값 이상으로 겹치는 box 제거)
 
 
 ----
