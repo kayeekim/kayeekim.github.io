@@ -59,20 +59,32 @@ Object Detection 이 무엇인지 알기 위해,
 _*모델 등장 순서: R-CNN -> Fast F-CNN -> Faster R-CNN_
 
 ## R-CNN (CVPR, 2014)
+* (0) Input Image -> (1) Extract region proposals (~2k (2,000장)) -> (2) Compute CNN features -> (3) Classify regions (+ bbox regression)
 * (1) Region proposal 방법: Input image 로부터 Selective Search 수행 - 2000개의 region proposal 을 찾음. 
-여기서 수행되는 Selective Search 알고리즘은 CPU 연산으로 진행됨
-* (2) Feature Extractor (Detection Network): (1)에서 찾은 Region proposal 부분에 대해 Crop & Resize 한 후 이를 CNN의 input으로 사용 
+    * 여기서 수행되는 Selective Search 알고리즘은 (딥러닝 연산이 아닌 기존 영상처리 기반의) CPU 연산으로 진행됨
+* (2) Feature Extractor (Detection Network): 
+    * Object Recognition을 위해 딥러닝 (CNN) 연산 활용
+    * (1)에서 찾은 Region proposal 부분 (각 객체에 대한 후보 bbox들; candidate bboxes) 에 대해 Warp: Crop & Resize 한 후 이를 CNN의 input으로 사용 
+        * Warp 하는 이유? 동일 사이즈로 만들어 주기 위해.  
+        * R-CNN Case: Convolution Layer 의 입력에서부터 동일한 Input Size 로 넣어주어서 Output Size 를 동일하게 한다.
+    * R-CNN (2014) Case: 개별 Region Proposal (a Candiidate bbox) 마다 CNN 수행 
+* (3) Classification & Regression : Support vEctor Machine / Bounding Box Regression
+    * (2) 에서 얻은 각각의 Convolution 결과에 대해 Classification & Regression 을 진행하여 
+    * 해당 candidate box 내 객체 존재 여부, bbox information 을 얻는다 
+    * R-CNN Case: Classifier 로 Linear SVM 사용
+        *  SVM은 CNN으로 부터 추출된 각각의 Feature Vector 들의 점수를 Class 별로 매기고, 객체 여부 & 객체라면 어떤 클래스 객체인지 판별하는 역할을 한다.
 
-### 특징
--. CNN으로 각 Region 의 클래스 분류 제안. DL 분야를 OD 에 적용
+### R-CNN (2014) 특징
+* CNN으로 각 Region 의 클래스 분류 제안. 처음으로 DL 분야를 OD 에 적용
 
-### 한계점
--. 전체 프레임 워크를 End-to-End로 학습 불가 - 단순히 컴포넌트 여러개가 함께 진행되는 형태. 
-* 입력 이미지에 대해 CPU 기반의 Selective Search 진행
-* CNN, SVM, Regressor 모듈이 모두 분리되어 있음. 즉, SVM과 Bounding box regression 결과로 CNN 업데이트 불가
-* 따라서 Global Optimal Solution 을 찾기 어려우며, 속도 또한 느림
-
--. 모든 RoI (Region of Interest) 를 CNN에 input으로 넣음. 즉 이미지 한장 당 2000번의 CNN 연산 필요
+### R-CNN (2014) 한계점
+* 전체 프레임 워크를 End-to-End로 학습 불가 - 단순히 컴포넌트 여러개가 함께 진행되는 형태. 
+    * 1) Selective Search (ROI 추출), 2) CNN, 3-1) SVM, 3-2) Bounding Box Regression 각각의 컴포넌트가 다단계로 이루어져 한 번에 학습되지 않는다.
+        * 1) 입력 이미지에 대해 CPU 기반의 Selective Search 진행
+        * 2, 3) CNN, SVM, Regressor 모듈이 모두 분리되어 있음. 즉, SVM과 Bounding box regression 결과로 CNN 업데이트 불가
+    * 따라서 Global Optimal Solution 을 찾기 어려우며, 속도 또한 느림
+* 모든 RoI (Region of Interest) 를 CNN에 input으로 넣음. 즉 이미지 한장 당 2000번의 CNN 연산 필요
+* 이러한 R-CNN의 단점을 해결하기 위해 Fast R-CNN, Faster R-CNN 등 후속 연구가 진행되었다.
 
 ### 동작 과정
 ![image](https://user-images.githubusercontent.com/98376833/157610885-98815c51-6845-4620-b2ac-bd92fc68f4a4.png)
@@ -157,7 +169,8 @@ _RPN Network_
 ----
 # Object Detection 에서 사용되는 기본 IDEA
 ## Region Proposals
--. 물체가 있을 법한 위치를 찾는 과정
+* 물체가 있을 법한 위치를 찾는 과정
+* ~ RoI 추출 ~ Candidate bboxes 추출
 #### (a) Sliding Window 방식  
 ![image](https://user-images.githubusercontent.com/98376833/157607446-bde9bc2a-b6ab-4bb0-8053-08cef71a57ce.png)
 
@@ -168,6 +181,17 @@ _RPN Network_
 
 * R-CNN, Fast R-CNN 에서 채택
 * 기본적으로 CPU 연산으로 돌아가도록 library 가 작성되어 있음
+* Selective Search 작동 원리
+    * Step 1) Segmentation 이미지 획득
+        * 기존 학습된 혹은 이미지 처리 모델을 이용하여 이미지 Segmentation 수행
+        * 이 때 사용된 segmentation 방법은, 기존의 영상처리 방법을 활용  
+    * Step 2) 반복적으로 작고 비슷한 Segmentation 영역을 점점 크게 하나로 합침
+    * Step 3) Step 2을 통해 추려진 Segmentation 영역을 바탕으로 -> Region Proposal (candidate bboxes 제안) 
+* R-CNN (2014) 에서 Selective Search 를 다루는 법
+    * Step 1) 색상, 영역 크기 등을 이용해 Non-Object Based Segmentation 을 수행한다
+        * Step 1 을 통해 가장 많은 Small Segmented Area 들을 얻을 수 있다.
+    * Step 2) Bottom-up 방식으로 Small Segmented Area 들을 합쳐서 더 큰 Segmented Area 를 생성한다
+    * R-CNN 에서는 위 두 step 을 반복하여 최종적으로 2000개의 Region Proposal (candidate bboxes) 을 생성한다. 
 
 ## 정확도 측정 방법
 ### 성능 평가 Metric: Precision & Recall
