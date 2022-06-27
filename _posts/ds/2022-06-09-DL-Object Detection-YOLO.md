@@ -29,7 +29,10 @@ last_modified_at: 2022-06-27
 * YOLO: You Only Look Once
 _*모델 등장 순서: YOLO-v1 (2016) -> YOLO-v2 (2017) -> YOLO-v3 (2018) -> YOLO-v4 (2020) -> YOLO-v5 (2020)_
 
-### R-CNN vs Fast R-CNN vs Faster R-CNN 구성요소
+### YOLO-v1 vs YOLO-v2 vs YOLO-v3 구성요소 
+* T.B.D
+
+### (Reference) R-CNN vs Fast R-CNN vs Faster R-CNN 구성요소
 * R-CNN
     * ROI (Selective Search) -> Conv (input: Each ROI) -> Support Vector MAchine / Bounding Box Regression 
 * Fast R-CNN
