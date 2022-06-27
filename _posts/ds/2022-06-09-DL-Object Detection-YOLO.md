@@ -12,7 +12,7 @@ toc: true
 toc_sticky: true
  
 date: 2022-06-09
-last_modified_at: 2022-06-09
+last_modified_at: 2022-06-27
 
 ---
 
@@ -104,8 +104,7 @@ _*모델 등장 순서: YOLO-v1 (2016) -> YOLO-v2 (2017) -> YOLO-v3 (2018) -> YO
         * (YOLO-v1) (grid size) * (5 + 5 + n_classes). *remind) YOLO-v1 에서는 셀당 2개의 bbox로 예측
     
 ### 동작 과정
-
-### YOLO-v2 (2017) 도입 Technique
+* YOLO-v2 (2017) 도입 Technique: Anchor Box
 * Anchor Box 도입 방법: Dimension Cluster, Direct Location Cluster
 * Passthrough Layer
     * (YOLO-v1) CNN Architecture 의 마지막 Feature Map 만 사용하여 객체 탐지.
@@ -149,49 +148,50 @@ _*모델 등장 순서: YOLO-v1 (2016) -> YOLO-v2 (2017) -> YOLO-v3 (2018) -> YO
 ---
 
 ## YOLO-v3 (2018)
+* 원 paper: Yolov3: An incremental improvement (2018)
+* YOLO-v3 (2018) 모델 Summary
+    * 1) 네트워크 모델을 기존의 darknet-19 에서 darknet-53 으로 확장함에 따라 네트워크의 복잡성이 증가
+    * 2) 기존 YOLO 모델과 비교하면 속도가 하락하였으나, 정확도가 급격히 상승함
+    * 3) 객체탐지 (Object Detection ) 모델에서 굉장히 적극적으로 활용되고 이음. 
 * YOLO-v3 (2018) 특징
+    * 수행 시간은 조금 느려졌으나, 성능이 대폭 개선
+    * (YOLO-v2 와 비교했을 때 신규 테크닉) Prediction Across Scale, Multi-label Classification 테크닉 도입
+* (0) Input Image -> (1-A) Backbone 모델 (Darknet-53 사용) & (1-B) Scale 사용: Scale을 다르게 하여 (e.g. 작은 사이즈 이미지에서, 중간 사이즈 이미지에서, 큰 사이즈 이미지에서 Object Detection 수행) -> (2) Bounding Boxes + Confidence: (1-B)의 Scale 별 결과들을 취합해서 최종적으로 bbox에 대한 output 과 객체에 대한 정보출력
+    * Darknet-53: YOLO-v2에서 사용한 Darknet-19 확장
+    * Scale 1: Scale이 작은 그림 (사이즈를 작게 한 이미지) 에서는 큰 물체를 인식
+    * Scale 2, 3: Scale을 크게해서 본 그림 (사이즈를 크게 한 이미지) 일 수록 점점 작은 물체를 예측 (인식)
+* Tensor 형태
+    * (YOLO-v3의 Output 차원수) (grid size) * (n_anchor boxes * (5+n_clasess)) (same as YOLO-v2)     
+        * 예시: 텐서 형태) (N*N) * (3 * ((4+1) + 80))
+        * grid size : N*N
+        * n_anchor boxes: BBox 수 (ex. 3)
+        * 5 : bbox 박스 좌표 정보 (4개; offset: x, y, w, h) + Objectiveness Score (1개)
+        * n_classes: 주어진 데이터의 class category 수 (ex. 80)
 
 ### 동작 과정
+* **Yolo-v2 (2017) 와 같은 방식** 의 Dimension Cluster (차원 클러스터) 와 Direct Location Cluster (직접적인 위치 예측) 사용
+    * Dimension Cluster: "K-means Clustering( Dimension Cluster )" 을 통해 Anchor Box 를 생성하여 Bounding Box 예측
+    * Direct Location Cluster: Anchor Box의 중심 위치 (b_x, b_y) 및 너비와 높이 (b_w, b_h) 를 어떤 비율로 조절할지를 예측함 
+* Prediction Across Scale 도입
+* Multi-label Classification 도입
+
+#### Prediction Across Scale
+* 요약: Anchor Box 를 Scale 별로 나눠준다.
+* 총 3개의 Scale을 활용하여, 각 Scale 당 3개의 Anchor Box 를 가짐. 
+    * Anchor box: 훈련 데이터 셋을 바탕으로 K-Means Clustering 을 적용하여 (Dimension Cluster 테크닉), 
+    * (YOLO-v3) 9개의 Anchor Box를 결정 -> 각 scale 당 3개의 Anchor Box 를 할당
+    * ex) COCO 데이터에서의 Anchor Box 형태:
+        * (10*13), (16*30), (33*23), (30*61), (62*45), (59*119), (116*90), (156*198), (373*326) 
+
+#### Multi-label Classification 
+* 각 box 는 Multi-label Classification 을 활용하여 Bounding Box 가 포함될 수 있는 Class 를 예측
+    * Multi-label: 하나의 셀에 두가지 이상의 객체가 같이 있을 수 있게 허용
+* Class Predictor: softmax 대신 logistic classifier를 사용 
+    * 각각의 클래스에 대해서 예측 (softmax) -> 이진 분류 문제로 변화 (logistic)
+* 장점: 사람이면서 여자인 경우와 같은 Multi-label 문제 해결 가능
+
 
 ### YOLO-v3 (2018) 한계점
-
-
-* R-CNN (2014) 특징
-    * CNN으로 각 Region 의 클래스 분류 제안. 처음으로 DL 분야를 OD 에 적용
-* (0) Input Image -> (1) Extract region proposals (~2k (2,000장)) -> (2) Compute CNN features -> (3) Classify regions (+ bbox regression)
-* (1) Region proposal 방법: Input image 로부터 Selective Search 수행 - 2000개의 region proposal 을 찾음. 
-    * 여기서 수행되는 Selective Search 알고리즘은 (딥러닝 연산이 아닌 기존 영상처리 기반의) CPU 연산으로 진행됨
-* (2) Feature Extractor (Detection Network): 
-    * Object Recognition을 위해 딥러닝 (CNN) 연산 활용
-    * (1)에서 찾은 Region proposal 부분 (각 객체에 대한 후보 bbox들; candidate bboxes) 에 대해 Warp: Crop & Resize 한 후 이를 CNN의 input으로 사용 
-        * Warp 하는 이유? 동일 사이즈로 만들어 주기 위해.  
-        * R-CNN Case: Convolution Layer 의 입력에서부터 동일한 Input Size 로 넣어주어서 Output Size 를 동일하게 한다.
-    * R-CNN (2014) Case: 개별 Region Proposal (a Candiidate bbox) 마다 CNN 수행 
-* (3) Classification & Regression : Support Vector Machine / Bounding Box Regression
-    * (2) 에서 얻은 각각의 Convolution 결과에 대해 Classification & Regression 을 진행하여 
-    * 해당 candidate box 내 객체 존재 여부, bbox information (BBox 크기, 위치 재조정 여부) 을 얻는다 
-    * R-CNN Case: Classifier 로 Linear SVM 사용
-        *  SVM은 CNN으로 부터 추출된 각각의 Feature Vector 들의 점수를 Class 별로 매기고, 객체 여부 & 객체라면 어떤 클래스 객체인지 판별하는 역할을 한다.
-
-
-* 전체 프레임 워크를 End-to-End로 학습 불가 - 단순히 컴포넌트 여러개가 함께 진행되는 형태. 
-    * 1) Selective Search (ROI 추출), 2) CNN, 3-1) SVM, 3-2) Bounding Box Regression 각각의 컴포넌트가 다단계로 이루어져 한 번에 학습되지 않는다.
-        * 1) 입력 이미지에 대해 CPU 기반의 Selective Search 진행
-        * 2, 3) CNN, SVM, Regressor 모듈이 모두 분리되어 있음. 즉, SVM과 Bounding box regression 결과로 CNN 업데이트 불가
-    * 따라서 Global Optimal Solution 을 찾기 어려우며, 속도 또한 느림
-* 모든 RoI (Region of Interest) 를 CNN에 input으로 넣음. 즉 이미지 한장 당 2000번의 CNN 연산 필요
-* 이러한 R-CNN의 단점을 해결하기 위해 Fast R-CNN, Faster R-CNN 등 후속 연구가 진행되었다.
-
----
-###
-* 모델 특징
-* 
-
-### 동작 과정
-
-### 한계점
-
-
 
 ----
 
