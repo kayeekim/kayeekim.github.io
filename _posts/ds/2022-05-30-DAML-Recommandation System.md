@@ -37,6 +37,12 @@ last_modified_at: 2022-05-30
     * Rating based, Frequency based
 * Personal taste
     * 고객이 이전에 (좋아하여) 보았던 것들과 비슷한 것. 고객이 이전에 보았던 것 = 고객이 좋아하는 것
-    * Contents based, Collaborative (Memory based : Item based, User based / Model based: Latent factor based)
+    * Contents based, Collaborative Filtering (CF) (Memory based : Item based CF, User based CF / Model based: Latent factor based CF)
 
+### Memory Based vs Model Based
+* Memory Based 추천 방법
+    * 대표: Item-based Collaborative Filtering, User-based Collaborative Filtering
+    * 메모리 기반의 추천 방법은 사용하는 데이터 (쑤집된 데이터) 에 비례하여 메모리가 사용됨
+* Model Based 추천 방법
+    * 대표: Latent factor based Collaborative Filtering 
 
