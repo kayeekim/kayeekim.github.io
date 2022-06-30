@@ -71,10 +71,25 @@ last_modified_at: 2022-05-30
 * Recall =  
 * F1-score 는 precision 과 recall 의 조화평균이다.
 
+### Entropy Diversity
+* 추천 알고리즘이 얼마나 다양한 영화장르를 추천했는지 평가한다
+* Shannon's diversity
+    * 한 집단 내의 데이터의 class가 얼마나 다양한지를 나타내는 지표
+    * 단순히 class 수로 판단하는게 아니라 (class 종류의 갯수), 각 class 에 속한 data 분포까지 고려하여 수치를 계산한다
+    * H = - sum of (p_i * ln(p_i))
+        * p_i : 클래스 i 에 대한 데이터의 수
+    * ![image](https://user-images.githubusercontent.com/98376833/176657961-163ea245-da06-4cf5-bcf7-cdb5c61dd324.png)
+        * Diversity index (다양성 분석) — Shannon's diversity, entropy: https://medium.com/@Aaron__Kim/diversity-index-%EB%8B%A4%EC%96%91%EC%84%B1-%EB%B6%84%EC%84%9D-shannons-diversity-information-gain-entropy-3e0dbd268e9e 
+
+
 ### nDCG (normalized Discounted Cumulative Gain)
 * 추천 순서를 고려하여 추천 성능을 평가하는 지표
 * nDCG 를 사용하면 추천의 갯수나 랭킹 결과의 길이에 따른 차이를 고려하여 비교할 수 있다. 
 * min, max 범위로 0~1 사이의 값을 가진다.
+* kh) relevance 계산방법은 목적에 따라 결정할 수 있다.
+    * e.g. relenavce: 관련이 있으면 1, 관련이 없으면 0 인 binary value로 사용
+    * e.g.2. relevance: 문제에 따라 세분화된 값을 가질 수 있음 예시) 시청 횟수와 관련해서 계산도 가능 
+* 추천시스템 Metric - nDCG: https://joyae.github.io/2020-09-02-nDCG/
 
 ---
 ## 추천 알고리즘의 성능 향상 Tip
